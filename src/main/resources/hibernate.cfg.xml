@@ -11,7 +11,7 @@
     <property name="connection.username">root</property>
     <property name="connection.password">passw0rd</property>
     <!-- SQL dialect -->
-    <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
     <!-- Minimum and Mandatory configuration when using hibernate starts here -->
 
     <!-- JDBC connection pool (use the built-in) -->
@@ -27,6 +27,13 @@
     <property name="show_sql">true</property>
 
     <!-- Drop and re-create the database schema on startup -->
-    <property name="hbm2ddl.auto">update</property>
+    <property name="hbm2ddl.auto">create</property>
+    <!-- 
+    validate: validate the schema, makes no changes to the database.
+	update: update the schema.
+	create: creates the schema, destroying previous data.
+	create-drop: drop the schema at the end of the session.
+     -->
+    
   </session-factory>
 </hibernate-configuration>
