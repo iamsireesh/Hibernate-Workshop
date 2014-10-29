@@ -1,0 +1,15 @@
+# Java.gitignore
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+
+# Maven.gitignore
+target/
+
+
+# Ubuntu temp files
+*~
