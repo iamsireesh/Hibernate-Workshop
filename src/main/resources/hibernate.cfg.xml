@@ -9,7 +9,7 @@
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="connection.url">jdbc:mysql://localhost:3306/HibernateWS?characterEncoding=UTF-8</property>
     <property name="connection.username">root</property>
-    <property name="connection.password">passw0rd</property>
+    <property name="connection.password">vsspl</property>
     <!-- SQL dialect -->
     <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
     <!-- Minimum and Mandatory configuration when using hibernate starts here -->
@@ -37,6 +37,6 @@
      
      <!-- Mapping classes -->
      <mapping class="org.sireesh.model.UserDetails" />
-    
+     <mapping class="org.sireesh.model.TableAnnotations" />
   </session-factory>
 </hibernate-configuration>
