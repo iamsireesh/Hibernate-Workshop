@@ -40,5 +40,6 @@
      <mapping class="org.sireesh.model.TableAnnotations" />
      <mapping class="org.sireesh.model.ColumnAnnotation"/>
      <mapping class="org.sireesh.model.MoreAnnotations"/>
+     <mapping class="org.sireesh.model.EmployeeDetails"/>
   </session-factory>
 </hibernate-configuration>
