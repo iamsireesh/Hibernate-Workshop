@@ -8,9 +8,14 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.cfg.Configuration;
 @Entity
 public class EmployeeDetails1 {
@@ -20,6 +25,11 @@ public class EmployeeDetails1 {
 	@Column(name = "EMP_NAME")
 	private String name;
 	@ElementCollection
+	@JoinTable(name="ADDRESS",joinColumns=@JoinColumn(name="USER_ID"))
+	//The below annotations are hibernate annotations not JPA annotations
+	                 //can be any name      
+	@GenericGenerator(name="hilo-generator",strategy="hilo")         //name should match
+	@CollectionId(columns={@Column(name="ADDRESS_ID")}, generator = "hilo-generator", type = @Type(type="int"))
 	private List<Address> address=new ArrayList<Address>();
 
 	public int getId() {
