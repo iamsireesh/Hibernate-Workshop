@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,7 +21,6 @@ import org.hibernate.cfg.Configuration;
 @Entity
 public class EmployeeDetails1 {
 	@Id
-	@GeneratedValue
 	private int Id;
 	@Column(name = "EMP_NAME")
 	private String name;
@@ -58,7 +58,7 @@ public class EmployeeDetails1 {
 	public static void main(String[] args) {
 		EmployeeDetails1 emp = new EmployeeDetails1();
 		emp.setName("SIREESH");
-		
+		emp.setId(1);
 
 		Address homeAddress = new Address();
 		homeAddress.setCity("Hyd");
@@ -82,5 +82,51 @@ public class EmployeeDetails1 {
 		session.save(emp);
 		session.getTransaction().commit();
 		session.close();
+		
+		session=sessionFactory.openSession();
+		
+		//Success scenario
+		emp=null;
+		emp=(EmployeeDetails1)session.get(EmployeeDetails1.class, 1);
+		System.out.println(emp.getId());
+		System.out.println(emp.getName());
+		
+		//If the fetch type is eager, Hibenate will load list of addresses (sub class details)
+		//even before accessing it
+		//By default if we doesn't config anything hibernate default configuration takes it as Lazy loading
+		System.out.println(emp.getAddress().size());
+		session.close();
+		
+		//Output
+		//Hibernate: select employeede0_.Id as Id1_3_0_, employeede0_.EMP_NAME as EMP_NAME2_3_0_ from EmployeeDetails1 employeede0_ where employeede0_.Id=?
+		//1
+		//SIREESH
+		//(Querying to child table after calling or accessing it)
+		//Hibernate: select address0_.USER_ID as USER_ID1_3_0_, address0_.CITY as CITY2_0_0_, address0_.pincode as pincode3_0_0_, address0_.STATE as STATE4_0_0_, address0_.STREET as STREET5_0_0_, address0_.ADDRESS_ID as ADDRESS_6_0_ from ADDRESS address0_ where address0_.USER_ID=?
+		//2 (size of addresses)
+		
+		
+		
+		System.out.println("Failure Scenario");
+		session=sessionFactory.openSession();
+		//Failue scenario
+		emp=null;
+		emp=(EmployeeDetails1)session.get(EmployeeDetails1.class, 1);
+		System.out.println(emp.getId());
+		System.out.println(emp.getName());
+		//closing the session before accessing the address (sub class object)
+		session.close();
+		//Calling addresses after closing the session when fetch type is LAZY
+		//If the fetch type is EAGER we won't get any error, As it will load before calling it.
+		System.out.println(emp.getAddress().size());
+		
+		//Output
+		//Hibernate: select employeede0_.Id as Id1_3_0_, employeede0_.EMP_NAME as EMP_NAME2_3_0_ from EmployeeDetails1 employeede0_ where employeede0_.Id=?
+		//1
+		//SIREESH
+		//Exception in thread "main" org.hibernate.LazyInitializationException: 
+		//failed to lazily initialize a collection of role: 
+		//org.sireesh.model.EmployeeDetails1.address, could not initialize proxy - no Session
+		
 	}
 }
